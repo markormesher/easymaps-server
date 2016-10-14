@@ -1,23 +1,14 @@
 express = require('express')
-bodyParser = require('body-parser')
 rfr = require('rfr')
 pJson = rfr('./package.json')
 c = rfr('./helpers/constants')
 
 # server config
 app = express()
-app.use(bodyParser.urlencoded({extended: false}))
+app.use('/scan-logs', rfr('./controllers/scan-logs'))
 
 # squash favicon requests
 app.use('/favicon.ico', (req, res) -> res.end())
-
-# TODO: real routes
-app.use('*', (req, res) ->
-	res.json(
-		message: 'Hello World'
-		version: pJson.version
-	)
-)
 
 # 404 error handler
 app.use((req, res, next) ->
@@ -28,6 +19,7 @@ app.use((req, res, next) ->
 
 # generic error handler
 app.use((error, req, res, next) ->
+	console.log(error)
 	res.status(error.status || 500)
 	res.json(error)
 )

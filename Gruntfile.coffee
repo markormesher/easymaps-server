@@ -16,6 +16,7 @@ module.exports = (grunt) ->
 			deploy:
 				command: [
 					'cd /var/node/prjserver.markormesher.co.uk'
+					'mkdir uploads'
 					'git pull origin master'
 					'npm i'
 					'pm2 stop --silent prj-server'

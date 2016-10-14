@@ -7,9 +7,9 @@
   "repository": "markormesher/prj-server",
   "main": "prj-server.js",
   "dependencies": {
-    "body-parser": "^1.15.2",
     "coffee-script": "^1.11.1",
     "express": "^4.14.0",
+    "multer": "^1.2.0",
     "rfr": "^1.2.3"
   },
   "devDependencies": {
