@@ -1,1 +1,1 @@
-# PRJ Server
+# EasyMaps Server

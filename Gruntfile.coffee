@@ -15,20 +15,20 @@ module.exports = (grunt) ->
 		sshexec:
 			deploy:
 				command: [
-					'cd /var/node/prjserver.markormesher.co.uk'
+					'cd /var/node/easymaps.markormesher.co.uk'
 					'mkdir -p uploads'
 					'git pull origin master'
 					'npm i'
-					'pm2 stop --silent prj-server'
-					'pm2 start --silent prj-server'
+					'pm2 stop --silent easymaps-server'
+					'pm2 start --silent easymaps-server'
 					'sleep 3'
-					'pm2 show prj-server'
+					'pm2 show easymaps-server'
 				].join(' && ')
 				options:
 					config: 'main'
 
 			status:
-				command: 'pm2 show prj-server'
+				command: 'pm2 show easymaps-server'
 				options:
 					config: 'main'
 
