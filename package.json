@@ -1,7 +1,7 @@
 {
   "name": "prj-server",
   "description": "Server for PRJ app data collection",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "UNLICENSED",
   "private": true,
   "repository": "markormesher/prj-server",
@@ -11,5 +11,9 @@
     "coffee-script": "^1.11.1",
     "express": "^4.14.0",
     "rfr": "^1.2.3"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-ssh": "^0.12.9"
   }
 }

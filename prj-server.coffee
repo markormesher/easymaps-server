@@ -13,9 +13,10 @@ app.use('/favicon.ico', (req, res) -> res.end())
 
 # TODO: real routes
 app.use('*', (req, res) ->
-	res.json({
-		'Hello': 'World'
-	})
+	res.json(
+		message: 'Hello World'
+		version: pJson.version
+	)
 )
 
 # 404 error handler
