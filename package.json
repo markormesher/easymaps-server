@@ -10,6 +10,7 @@
     "coffee-script": "^1.11.1",
     "express": "^4.14.0",
     "multer": "^1.2.0",
+    "node-zip": "^1.1.1",
     "path": "^0.12.7",
     "pug": "^2.0.0-beta6",
     "rfr": "^1.2.3"
