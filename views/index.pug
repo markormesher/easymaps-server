@@ -1,0 +1,21 @@
+extends layout
+
+block body
+
+    p EasyMaps is the #[strong final year project] for my computer science degree at King's College London. Is will be a #[strong totally offline, intelligent mapper for the London Underground], built on top of domain-independent algorithms that should easily translate to other networks. The project falls into two halves:
+
+    div.row
+        div.col-md-6
+            h2 The Mapping App
+
+            p This is the straightforward bit: an app that will guide users from A to B and show them where they are on their route, #[strong without requiring an Internet connection or a GPS signal]. It will use an #[strong AI planner] to generate routes and #[strong public WiFi access points as location beacons].
+
+        div.col-md-6
+            h2 The Scanning App
+
+            p Unfortunately, data to map public WiFi to London Underground stations doesn't exist anywhere public, so I need to generate it. I'm building a system to #[strong crowd source it with zero effort from the crowd].
+
+    div.alert.alert-info(style = 'margin-top: 20px;')
+        h4 #[strong You could help to build EasyMaps!]
+        p If you're an Android user and travel on the London Underground, you could collect data with zero effort to help with this project! Please get in touch if you want to hear more!
+        p Email: #[strong me@markormesher.co.uk]

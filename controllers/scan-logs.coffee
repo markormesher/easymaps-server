@@ -60,6 +60,7 @@ router.get('/', (req, res, next) ->
 		res.render('scan-logs/index', {
 			meta: {
 				title: 'Scan Logs'
+				icon: 'fa-file-text-o'
 				page: 'scan-logs'
 			}
 			files: output
