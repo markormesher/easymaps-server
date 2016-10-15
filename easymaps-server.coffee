@@ -1,10 +1,16 @@
 express = require('express')
 rfr = require('rfr')
+path = require('path')
 pJson = rfr('./package.json')
 c = rfr('./helpers/constants')
 
 # server config
 app = express()
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+# routes
+app.use('/', rfr('./controllers/_root'))
 app.use('/scan-logs', rfr('./controllers/scan-logs'))
 
 # squash favicon requests

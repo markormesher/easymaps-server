@@ -1,5 +1,6 @@
 router = require('express').Router()
 multer = require('multer')
+fs = require('fs')
 rfr = require('rfr')
 c = rfr('./helpers/constants')
 
@@ -41,6 +42,28 @@ router.post('/upload', (req, res) ->
 		else
 			res.status(200)
 			res.end()
+	)
+)
+
+router.get('/', (req, res, next) ->
+	fs.readdir('uploads', (err, files) ->
+		if (err) then return next(err)
+
+		output = {}
+		for f in files
+			[network, timestamp, user...] = f.replace('.txt', '').split('-')
+			user = user.join('-')
+
+			if (!(network of output)) then output[network] = []
+			output[network].push(f)
+
+		res.render('scan-logs/index', {
+			meta: {
+				title: 'Scan Logs'
+				page: 'scan-logs'
+			}
+			files: output
+		})
 	)
 )
 

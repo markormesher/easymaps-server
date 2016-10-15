@@ -1,0 +1,8 @@
+extends ../layout
+
+block body
+
+    each fileList, network in files
+        h2 #{network}
+        each file in fileList
+            p #{file}

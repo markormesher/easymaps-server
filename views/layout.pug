@@ -1,0 +1,45 @@
+- meta = meta || {}
+
+doctype html
+html
+    head
+        if (meta.title)
+            title EasyMaps :: #{meta.title}
+        else
+            title EasyMaps
+
+        link(rel = 'stylesheet',
+        href = '//fonts.googleapis.com/css?family=Lato:300,400,700,900')
+        link(rel = 'stylesheet',
+        href = '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',
+        integrity = 'sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7',
+        crossorigin = 'anonymous')
+        link(rel = 'stylesheet',
+        href = '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css',
+        integrity = 'sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r',
+        crossorigin = 'anonymous')
+        link(rel = 'stylesheet',
+        href = '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
+
+        block head
+
+    body
+        nav.navbar.navbar-default
+        nav.navbar.navbar-default.navbar-fixed-top
+            div.container
+                div.navbar-header: a.navbar-brand(href = '/') EasyMaps
+                div#navbar.navbar-collapse.collapse
+                    ul.nav.navbar-nav
+                        li(class = meta.page == 'scan-logs' ? 'active' : ''): a(href = '/scan-logs') Scan Logs
+
+
+        div.container: div.row: div.col-md-12
+            h1 #{meta.title || 'EasyMaps'}
+            block body
+
+        script(src = '//code.jquery.com/jquery-2.2.4.min.js',
+        integrity = 'sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=',
+        crossorigin = 'anonymous')
+        script(src = '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js',
+        integrity = 'sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS',
+        crossorigin = 'anonymous')
