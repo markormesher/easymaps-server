@@ -31,6 +31,7 @@ uploader = multer({
 			userId = req.body['userId']
 			if (!c.USER_ID_FORMAT.test(userId)) then userId = 'unknown'
 
+			# callback with new filename
 			cb(null, "#{network}-#{timestamp}-#{userId}.txt")
 	})
 })
@@ -39,11 +40,22 @@ router.get('/', (req, res, next) ->
 	fs.readdir('uploads', (err, files) ->
 		if (err) then return next(err)
 
+		# count files and collect unique users (both grouped by network)
 		output = {}
 		for f in files
-			[network, ignored...] = f.replace('.txt', '').split('-')
-			if (!(network of output)) then output[network] = 0
-			output[network]++
+			[network, timestamp, userId...] = f.replace('.txt', '').split('-')
+			userId = userId.join('-')
+
+			if (!(network of output))
+				output[network] = {files: 0, users: []}
+
+			output[network].files++
+			if (output[network].users.indexOf(userId) == -1)
+				output[network].users.push(userId)
+
+		# reduce unique users list to count only
+		for network, data of output
+			output[network].users = data.users.length
 
 		res.render('scan-logs/index', {
 			meta: {
@@ -64,12 +76,14 @@ router.get('/download-network/:network', (req, res, next) ->
 	zip = zipper()
 	filesToZip = []
 
+	# get list of files, filtered by network prefix
 	fs.readdir('uploads', (err, files) ->
 		if (err) then return next(err)
 		filesToZip = files.filter((x) -> x.substr(0, network.length) == network)
 		addFile(0)
 	)
 
+	# read file i asynchronously and add to zip collection
 	addFile = (i) ->
 		if (i == filesToZip.length)
 			done()
@@ -80,6 +94,7 @@ router.get('/download-network/:network', (req, res, next) ->
 				addFile(i + 1)
 			)
 
+	# send zip file to client
 	done = () ->
 		res.setHeader('Content-disposition', "attachment; filename=#{network}.zip")
 		res.setHeader('Content-type', 'application/zip')

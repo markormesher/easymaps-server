@@ -7,12 +7,14 @@ block body
             tr
                 th Network
                 th Files
+                th Users
                 th Actions
         tbody
-            each count, network in files
+            each data, network in files
                 tr
                     td= network
-                    td(data-order = count)= count.toLocaleString()
+                    td(data-order = data.files)= data.files.toLocaleString()
+                    td(data-order = data.users)= data.users.toLocaleString()
                     td: a.btn.btn-info.btn-xs(href = '/scan-logs/download-network/' + network)
                         i.fa.fa-fw.fa-download
                         span &nbsp; Download .zip
