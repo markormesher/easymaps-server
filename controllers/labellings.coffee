@@ -79,7 +79,6 @@ router.get('/download/:network', (req, res, next) ->
 
 	# send zip file to client
 	done = (file) ->
-		console.log(file)
 		res.writeHead(200, {
 			'Content-disposition': "attachment; filename=#{network}-#{maxTimestamp}.txt",
 			'Content-type': 'text/plain'
