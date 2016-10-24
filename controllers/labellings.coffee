@@ -5,7 +5,7 @@ zipper = require('node-zip')
 rfr = require('rfr')
 c = rfr('./helpers/constants')
 
-PATH = 'uploads/scan-logs'
+PATH = 'uploads/labellings'
 
 uploader = multer({
 	storage: multer.diskStorage({
@@ -15,26 +15,16 @@ uploader = multer({
 			if (file.mimetype != 'text/plain')
 				req.uploadErrors.push('MIME type must be text/plain')
 
-			if (!c.LOG_FILE_NAME_FORMAT.test(file.originalname))
-				req.uploadErrors.push('File name does not match expected format')
-
 			if (!req.body['network'])
 				req.uploadErrors.push('No network specified')
-
-			if (!req.body['userId'])
-				req.uploadErrors.push('No user ID specified')
 
 			if (req.uploadErrors.length)
 				cb(Error(req.uploadErrors.join(', ')))
 				return
 
-			timestamp = file.originalname.replace('.txt', '')
-			network = req.body['network']
-			userId = req.body['userId']
-			if (!c.USER_ID_FORMAT.test(userId)) then userId = 'unknown'
-
 			# callback with new filename
-			cb(null, "#{network}-#{timestamp}-#{userId}.txt")
+			network = req.body['network']
+			cb(null, "#{network}-#{Date().now}.txt")
 	})
 })
 
@@ -42,28 +32,23 @@ router.get('/', (req, res, next) ->
 	fs.readdir(PATH, (err, files) ->
 		if (err) then return next(err)
 
-		# count files and collect unique users (both grouped by network)
+		# versions (both grouped by network)
 		output = {}
 		for f in files
-			[network, timestamp, userId...] = f.replace('.txt', '').split('-')
-			userId = userId.join('-')
+			[network, timestamp] = f.replace('.txt', '').split('-')
 
 			if (!(network of output))
-				output[network] = {files: 0, users: []}
+				output[network] = {files: 0, latest: -1}
 
 			output[network].files++
-			if (output[network].users.indexOf(userId) == -1)
-				output[network].users.push(userId)
+			if (output[network].latest < timestamp)
+				output[network].latest = timestamp
 
-		# reduce unique users list to count only
-		for network, data of output
-			output[network].users = data.users.length
-
-		res.render('scan-logs/index', {
+		res.render('labellings/index', {
 			meta: {
-				title: 'Scan Logs'
-				icon: 'fa-file-text-o'
-				page: 'scan-logs'
+				title: 'Network Labellings'
+				icon: 'fa-tags'
+				page: 'labellings'
 			}
 			files: output
 		})
@@ -71,6 +56,38 @@ router.get('/', (req, res, next) ->
 )
 
 router.get('/download/:network', (req, res, next) ->
+	network = req.params['network']
+	if (!network)
+		next(Error('No network specified'))
+		return
+
+	fileToSend = null
+	maxTimestamp = -1
+
+	# get list of files, filtered by network prefix, and pick the latest
+	fs.readdir(PATH, (err, files) ->
+		if (err) then return next(err)
+		filesToConsider = files.filter((x) -> x.substr(0, network.length) == network)
+		for f in filesToConsider
+			[network, timestamp] = f.replace('.txt', '').split('-')
+			if (timestamp > maxTimestamp)
+				maxTimestamp = timestamp
+				fileToSend = f
+
+		done(fileToSend)
+	)
+
+	# send zip file to client
+	done = (file) ->
+		console.log(file)
+		res.writeHead(200, {
+			'Content-disposition': "attachment; filename=#{network}-#{maxTimestamp}.txt",
+			'Content-type': 'text/plain'
+		})
+		fs.createReadStream(PATH + '/' + file).pipe(res)
+)
+
+router.get('/download-all/:network', (req, res, next) ->
 	network = req.params['network']
 	if (!network)
 		next(Error('No network specified'))
@@ -99,7 +116,7 @@ router.get('/download/:network', (req, res, next) ->
 
 	# send zip file to client
 	done = () ->
-		res.setHeader('Content-disposition', "attachment; filename=#{network}-scan-logs.zip")
+		res.setHeader('Content-disposition', "attachment; filename=#{network}-labellings.zip")
 		res.setHeader('Content-type', 'application/zip')
 		res.end(Buffer(zip.generate({base64: false, compression: 'DEFLATE'}), 'binary'))
 )

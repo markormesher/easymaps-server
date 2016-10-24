@@ -12,6 +12,7 @@ app.set('view engine', 'pug');
 # routes
 app.use('/', rfr('./controllers/_root'))
 app.use('/scan-logs', rfr('./controllers/scan-logs'))
+app.use('/labellings', rfr('./controllers/labellings'))
 
 # squash favicon requests
 app.use('/favicon.ico', (req, res) -> res.end())
