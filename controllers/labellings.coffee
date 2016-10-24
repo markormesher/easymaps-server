@@ -3,13 +3,12 @@ multer = require('multer')
 fs = require('fs')
 zipper = require('node-zip')
 rfr = require('rfr')
-c = rfr('./helpers/constants')
 
 PATH = 'uploads/labellings'
 
 uploader = multer({
 	storage: multer.diskStorage({
-		destination: PATH
+		destination: PATH + '/'
 		filename: (req, file, cb) ->
 			req.uploadErrors = []
 			if (file.mimetype != 'text/plain')
@@ -24,7 +23,7 @@ uploader = multer({
 
 			# callback with new filename
 			network = req.body['network']
-			cb(null, "#{network}-#{Date().now}.txt")
+			cb(null, "#{network}-#{(new Date()).getTime()}.txt")
 	})
 })
 
@@ -136,8 +135,7 @@ router.post('/upload', (req, res) ->
 			res.status(400)
 			res.json(req.uploadErrors)
 		else
-			res.status(200)
-			res.end()
+			res.redirect('/labellings')
 	)
 )
 

@@ -3,7 +3,7 @@ extends ../layout
 block body
 
     div.row: div.col-md-6
-        form
+        form(method = 'post', action = '/labellings/upload', enctype = 'multipart/form-data')
             div.form-group
                 label(for = 'network') Network
                 input#network.form-control(name = 'network')
