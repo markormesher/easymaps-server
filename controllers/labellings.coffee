@@ -120,6 +120,16 @@ router.get('/download-all/:network', (req, res, next) ->
 		res.end(Buffer(zip.generate({base64: false, compression: 'DEFLATE'}), 'binary'))
 )
 
+router.get('/upload', (req, res) ->
+	res.render('labellings/upload', {
+		meta: {
+			title: 'Upload Network Labelling'
+			icon: 'fa-tags'
+			page: 'labellings'
+		}
+	})
+)
+
 router.post('/upload', (req, res) ->
 	uploader.single('file')(req, res, (err) ->
 		if (err)
