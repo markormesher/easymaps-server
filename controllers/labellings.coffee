@@ -3,6 +3,7 @@ multer = require('multer')
 fs = require('fs')
 zipper = require('node-zip')
 rfr = require('rfr')
+authCheck = rfr('./helpers/auth-check')
 
 PATH = 'uploads/labellings'
 
@@ -27,7 +28,7 @@ uploader = multer({
 	})
 })
 
-router.get('/', (req, res, next) ->
+router.get('/', authCheck, (req, res, next) ->
 	fs.readdir(PATH, (err, files) ->
 		if (err) then return next(err)
 
@@ -37,7 +38,7 @@ router.get('/', (req, res, next) ->
 			[network, timestamp] = f.replace('.txt', '').split('-')
 
 			if (!(network of output))
-				output[network] = {files: 0, latest: -1}
+				output[network] = { files: 0, latest: -1 }
 
 			output[network].files++
 			if (output[network].latest < timestamp)
@@ -54,7 +55,7 @@ router.get('/', (req, res, next) ->
 	)
 )
 
-router.get('/download/:network', (req, res, next) ->
+router.get('/download/:network', authCheck, (req, res, next) ->
 	network = req.params['network']
 	if (!network)
 		next(Error('No network specified'))
@@ -85,7 +86,7 @@ router.get('/download/:network', (req, res, next) ->
 		fs.createReadStream(PATH + '/' + file).pipe(res)
 )
 
-router.get('/download-all/:network', (req, res, next) ->
+router.get('/download-all/:network', authCheck, (req, res, next) ->
 	network = req.params['network']
 	if (!network)
 		next(Error('No network specified'))
@@ -116,10 +117,10 @@ router.get('/download-all/:network', (req, res, next) ->
 	done = () ->
 		res.setHeader('Content-disposition', "attachment; filename=#{network}-labellings.zip")
 		res.setHeader('Content-type', 'application/zip')
-		res.end(Buffer(zip.generate({base64: false, compression: 'DEFLATE'}), 'binary'))
+		res.end(Buffer(zip.generate({ base64: false, compression: 'DEFLATE' }), 'binary'))
 )
 
-router.get('/upload', (req, res) ->
+router.get('/upload', authCheck, (req, res) ->
 	res.render('labellings/upload', {
 		meta: {
 			title: 'Upload Network Labelling'
@@ -129,7 +130,7 @@ router.get('/upload', (req, res) ->
 	})
 )
 
-router.post('/upload', (req, res) ->
+router.post('/upload', authCheck, (req, res) ->
 	uploader.single('file')(req, res, (err) ->
 		if (err)
 			res.status(400)

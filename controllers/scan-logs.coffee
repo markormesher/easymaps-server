@@ -3,6 +3,7 @@ multer = require('multer')
 fs = require('fs')
 zipper = require('node-zip')
 rfr = require('rfr')
+authCheck = rfr('./helpers/auth-check')
 c = rfr('./helpers/constants')
 
 PATH = 'uploads/scan-logs'
@@ -38,7 +39,7 @@ uploader = multer({
 	})
 })
 
-router.get('/', (req, res, next) ->
+router.get('/', authCheck, (req, res, next) ->
 	fs.readdir(PATH, (err, files) ->
 		if (err) then return next(err)
 
@@ -49,7 +50,7 @@ router.get('/', (req, res, next) ->
 			userId = userId.join('-')
 
 			if (!(network of output))
-				output[network] = {files: 0, users: []}
+				output[network] = { files: 0, users: [] }
 
 			output[network].files++
 			if (output[network].users.indexOf(userId) == -1)
@@ -70,7 +71,7 @@ router.get('/', (req, res, next) ->
 	)
 )
 
-router.get('/download/:network', (req, res, next) ->
+router.get('/download/:network', authCheck, (req, res, next) ->
 	network = req.params['network']
 	if (!network)
 		next(Error('No network specified'))
@@ -101,7 +102,7 @@ router.get('/download/:network', (req, res, next) ->
 	done = () ->
 		res.setHeader('Content-disposition', "attachment; filename=#{network}-scan-logs.zip")
 		res.setHeader('Content-type', 'application/zip')
-		res.end(Buffer(zip.generate({base64: false, compression: 'DEFLATE'}), 'binary'))
+		res.end(Buffer(zip.generate({ base64: false, compression: 'DEFLATE' }), 'binary'))
 )
 
 router.post('/upload', (req, res) ->

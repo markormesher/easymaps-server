@@ -7,10 +7,16 @@
   "repository": "markormesher/easymaps-server",
   "main": "easymaps-server.js",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "coffee-script": "^1.11.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
+    "express-flash": "0.0.2",
+    "express-session": "^1.14.1",
     "multer": "^1.2.0",
     "node-zip": "^1.1.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pug": "^2.0.0-beta6",
     "rfr": "^1.2.3"
