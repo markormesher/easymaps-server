@@ -8,6 +8,7 @@ cookieParser = require('cookie-parser')
 passport = require('passport')
 pJson = rfr('./package.json')
 c = rfr('./helpers/constants')
+authCheck = rfr('./helpers/auth-check')
 
 # server config
 app = express()
@@ -26,6 +27,7 @@ app.use(session({
 rfr('./helpers/passport-config')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(authCheck.checkOnly)
 
 # routes
 app.use('/', rfr('./controllers/_root'))

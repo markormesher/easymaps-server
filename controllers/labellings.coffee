@@ -28,7 +28,7 @@ uploader = multer({
 	})
 })
 
-router.get('/', authCheck, (req, res, next) ->
+router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
 	fs.readdir(PATH, (err, files) ->
 		if (err) then return next(err)
 
@@ -55,7 +55,7 @@ router.get('/', authCheck, (req, res, next) ->
 	)
 )
 
-router.get('/download/:network', authCheck, (req, res, next) ->
+router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 	network = req.params['network']
 	if (!network)
 		next(Error('No network specified'))
@@ -86,7 +86,7 @@ router.get('/download/:network', authCheck, (req, res, next) ->
 		fs.createReadStream(PATH + '/' + file).pipe(res)
 )
 
-router.get('/download-all/:network', authCheck, (req, res, next) ->
+router.get('/download-all/:network', authCheck.checkAndRefuse, (req, res, next) ->
 	network = req.params['network']
 	if (!network)
 		next(Error('No network specified'))
@@ -120,7 +120,7 @@ router.get('/download-all/:network', authCheck, (req, res, next) ->
 		res.end(Buffer(zip.generate({ base64: false, compression: 'DEFLATE' }), 'binary'))
 )
 
-router.get('/upload', authCheck, (req, res) ->
+router.get('/upload', authCheck.checkAndRefuse, (req, res) ->
 	res.render('labellings/upload', {
 		meta: {
 			title: 'Upload Network Labelling'
@@ -130,7 +130,7 @@ router.get('/upload', authCheck, (req, res) ->
 	})
 )
 
-router.post('/upload', authCheck, (req, res) ->
+router.post('/upload', authCheck.checkAndRefuse, (req, res) ->
 	uploader.single('file')(req, res, (err) ->
 		if (err)
 			res.status(400)

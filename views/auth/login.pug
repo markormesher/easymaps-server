@@ -7,6 +7,10 @@ block body
         div.row: div.col-md-6: div.alert.alert-danger
             p Error: invalid username or password!
 
+    if (errors.indexOf('login-required') >= 0)
+        div.row: div.col-md-6: div.alert.alert-danger
+            p Sorry, you need to log in first!
+
     div.row: div.col-md-6
         form(method = 'post', action = '/auth/login')
             div.form-group

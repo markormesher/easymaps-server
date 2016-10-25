@@ -39,7 +39,7 @@ uploader = multer({
 	})
 })
 
-router.get('/', authCheck, (req, res, next) ->
+router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
 	fs.readdir(PATH, (err, files) ->
 		if (err) then return next(err)
 
@@ -71,7 +71,7 @@ router.get('/', authCheck, (req, res, next) ->
 	)
 )
 
-router.get('/download/:network', authCheck, (req, res, next) ->
+router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 	network = req.params['network']
 	if (!network)
 		next(Error('No network specified'))

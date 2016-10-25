@@ -26,15 +26,18 @@ html
         block head
 
     body
-        nav.navbar.navbar-default
+        nav.navbar.navbar-default.pull
         nav.navbar.navbar-default.navbar-fixed-top
             div.container
                 div.navbar-header: a.navbar-brand(href = '/') EasyMaps
-                div#navbar.navbar-collapse.collapse
+                div#navbar.navbar-collapse.collapse.pull-left
                     ul.nav.navbar-nav
                         li(class = meta.page == 'scan-logs' ? 'active' : ''): a(href = '/scan-logs') Scan Logs
                         li(class = meta.page == 'labellings' ? 'active' : ''): a(href = '/labellings') Labellings
 
+                if (locals.user)
+                    div.pull-right(style = "height: 50px")
+                        p(style = "line-height: 50px") Logged in as #{locals.user.name}
 
         div.container: div.row: div.col-md-12
             h1
