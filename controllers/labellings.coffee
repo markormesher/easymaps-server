@@ -22,7 +22,6 @@ uploader = multer({
 				cb(Error(req.uploadErrors.join(', ')))
 				return
 
-			# callback with new filename
 			network = req.body['network']
 			cb(null, "#{network}-#{(new Date()).getTime()}.txt")
 	})
@@ -32,7 +31,7 @@ router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
 	fs.readdir(PATH, (err, files) ->
 		if (err) then return next(err)
 
-		# versions (both grouped by network)
+		# versions (grouped by network)
 		output = {}
 		for f in files
 			[network, timestamp] = f.replace('.txt', '').split('-')

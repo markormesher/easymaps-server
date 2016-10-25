@@ -34,7 +34,6 @@ uploader = multer({
 			userId = req.body['userId']
 			if (!c.USER_ID_FORMAT.test(userId)) then userId = 'unknown'
 
-			# callback with new filename
 			cb(null, "#{network}-#{timestamp}-#{userId}.txt")
 	})
 })
