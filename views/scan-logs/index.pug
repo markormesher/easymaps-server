@@ -2,31 +2,32 @@ extends ../layout
 
 block body
 
-    table#network-list.table.table-striped.table-hover
-        thead
-            tr
-                th Network
-                th Files
-                th Users
-                th Actions
-        tbody
-            each data, network in files
-                tr
-                    td= network
-                    td(data-order = data.files)= data.files.toLocaleString()
-                    td(data-order = data.users)= data.users.toLocaleString()
-                    td: a.btn.btn-default.btn-xs(href = '/scan-logs/download/' + network)
-                        i.fa.fa-fw.fa-download
-                        span &nbsp; Download All
+	div.row: div.col-md-12
+		table#network-list.table.table-striped.table-hover
+			thead
+				tr
+					th Network
+					th Files
+					th Users
+					th Actions
+			tbody
+				each data, network in files
+					tr
+						td= network
+						td(data-order = data.files)= data.files.toLocaleString()
+						td(data-order = data.users)= data.users.toLocaleString()
+						td: a.btn.btn-default.btn-xs(href = '/scan-logs/download/' + network)
+							i.fa.fa-fw.fa-download
+							span &nbsp; Download All
 
 block scripts
 
-    script.
-        $(document).ready(function() {
-            $('#network-list').DataTable({
-                paging: false,
-                info: false,
-                searching: false,
-                order: [[1, 'desc']]
-            });
-        });
+	script.
+		$(document).ready(function () {
+			$('#network-list').DataTable({
+				paging: false,
+				info: false,
+				searching: false,
+				order: [[1, 'desc']]
+			});
+		});

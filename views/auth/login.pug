@@ -16,17 +16,17 @@ block body
         div.row: div.col-md-6: div.alert.alert-info
             p You have been logged out.
 
-    div.row: div.col-md-6
-        form(method = 'post', action = '/auth/login')
-            div.form-group
+    form(method = 'post', action = '/auth/login')
+        div.row
+            div.col-md-6: div.form-group
                 label(for = 'username') Username
                 input#username.form-control(name = 'username')
 
-            div.form-group
+            div.col-md-6: div.form-group
                 label(for = 'password') Password
                 input#password.form-control(name = 'password', type = 'password')
 
-            div.form-group
+            div.col-md-6: div.form-group
                 button.btn.btn-success
                     i.fa.fa-fw.fa-key
                     span &nbsp; Login

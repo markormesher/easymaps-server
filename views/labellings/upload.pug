@@ -2,36 +2,36 @@ extends ../layout
 
 block body
 
-    div.row: div.col-md-6
-        form(method = 'post', action = '/labellings/upload', enctype = 'multipart/form-data')
-            div.form-group
-                label(for = 'network') Network
-                input#network.form-control(name = 'network')
+	form(method = 'post', action = '/labellings/upload', enctype = 'multipart/form-data')
+		div.row
+			div.col-md-6: div.form-group
+				label(for = 'network') Network
+				input#network.form-control(name = 'network')
 
-            div.form-group
-                input.hidden#file(name = 'file', type = 'file')
-                label(for = 'file') Labelling Output
-                div.input-group
-                    input#fileName.form-control(disabled = true)
-                    span.input-group-btn
-                        btn#fileDummyButton.btn.btn-default
-                            i.fa.fa-fw.fa-file-text-o
-                            span &nbsp; Select File
+			div.col-md-6: div.form-group
+				input.hidden#file(name = 'file', type = 'file')
+				label(for = 'file') Labelling File
+				div.input-group
+					input#fileName.form-control(disabled = true)
+					span.input-group-btn
+						btn#fileDummyButton.btn.btn-default
+							i.fa.fa-fw.fa-file-text-o
+							span &nbsp; Select File
 
-            div.form-group
-                button.btn.btn-success
-                    i.fa.fa-fw.fa-upload
-                    span &nbsp; Upload
+			div.col-md-6: div.form-group
+				button.btn.btn-success
+					i.fa.fa-fw.fa-upload
+					span &nbsp; Upload
 
 block scripts
 
-    script.
-        $(document).ready(function () {
-            $('#file').change(function() {
-                $('#fileName').val($(this).val().split('\\').pop())
-            });
+	script.
+		$(document).ready(function () {
+			$('#file').change(function () {
+				$('#fileName').val($(this).val().split('\\').pop())
+			});
 
-            $('#fileDummyButton').click(function() {
-                $('#file').click();
-            });
-        });
+			$('#fileDummyButton').click(function () {
+				$('#file').click();
+			});
+		});

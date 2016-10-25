@@ -8,7 +8,7 @@ router.get('/login', (req, res) ->
 		meta: {
 			page: 'login'
 			title: 'Login'
-			icon: 'fa-key'
+			icon: 'fa-lock'
 		}
 		errors: req.flash('error')
 		info: req.flash('info')

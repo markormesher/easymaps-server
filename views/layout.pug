@@ -42,10 +42,14 @@ html
 						else
 							li(class = meta.page == 'login' ? 'active' : ''): a(href = '/auth/login') Login
 
-		div.container: div.row: div.col-md-12
-			h1
-				i(class = 'fa text-muted ' + (meta.icon || 'fa-map-marker'), style = 'margin-right: 10px;')
-				span #{meta.title || 'EasyMaps'}
+		div.container
+
+			div.row: div.col-md-12
+				h1(style = 'margin-top: 10px; margin-bottom: 20px;')
+					- icon = meta.icon || 'fa-map-marker'
+					i(class = 'fa ' + icon, style = 'margin-right: 10px; color: #d0d0d0;')
+					span #{meta.title || 'EasyMaps'}
+
 			block body
 
 		script(src = '//code.jquery.com/jquery-2.2.4.min.js',

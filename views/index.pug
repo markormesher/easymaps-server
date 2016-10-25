@@ -2,20 +2,39 @@ extends layout
 
 block body
 
-    p EasyMaps is the #[strong final year project] for my computer science degree at King's College London. Is will be a #[strong totally offline, intelligent mapper for the London Underground], built on top of domain-independent algorithms that should easily translate to other networks. The project falls into two halves:
+	p.lead EasyMaps is the #[strong final year project] component of #[a(href = 'http://markormesher.co.uk') my] degree at King's College London.
 
-    div.row
-        div.col-md-6
-            h2 The Mapping App
+	p Officially, it will be #[strong domain-independent] system capable of generating data to power a #[strong self-contained, offline location detector] for any kind of network, based on nothing but raw logs of the characteristics of the network's nodes, obtained with very minimal human effort.
 
-            p This is the straightforward bit: an app that will guide users from A to B and show them where they are on their route, #[strong without requiring an Internet connection or a GPS signal]. It will use an #[strong AI planner] to generate routes and #[strong public WiFi access points as location beacons].
+	p In practise, it will be an #[strong offline GPS for the London Underground], based on the WiFi available at most stations. That's because I'm using the London Underground as a testbed for all aspects of the project.
 
-        div.col-md-6
-            h2 The Scanning App
+	p The work falls into three pieces:
 
-            p Unfortunately, data to map public WiFi to London Underground stations doesn't exist anywhere public, so I need to generate it. I'm building a system to #[strong crowd source it with zero effort from the crowd].
+	div.row
+		div.col-md-6
+			h2 The Scanning App
 
-    div.alert.alert-info(style = 'margin-top: 20px;')
-        h4 #[strong You could help to build EasyMaps!]
-        p If you're an Android user and travel on the London Underground, you could collect data with zero effort to help with this project! Please get in touch if you want to hear more!
-        p Email: #[strong me@markormesher.co.uk]
+			p This app #[strong scans for visible WiFi networks] while a user makes their regular Tube journeys. It requires almost zero human input#[sup *], runs in the background, and has a minimal effect on battery life.
+
+			p.small * It has an on/off switch. That's it.
+
+		div.col-md-6
+			h2 The Mapping App
+
+			p Using the data generated from the project, this app that will guide users from A to B and show them where they are on their route, #[strong without requiring an Internet connection or a GPS signal]. It will use an #[strong AI planner] to generate routes and #[strong WiFi access points as location beacons].
+
+		div.col-md-12
+			h2 The Engine
+
+			p This is the #[strong beating heart of the project]: it will take the raw WiFi scan logs from multiple users, crunch the data, and (in theory) produce enough data for the mapping app to accurately determine what station its user is in.
+
+			p How does it do all of this? Data sanitation based on confidence heuristics, trait clustering, connection inference, and sub-graph isomorphism.
+
+	div.alert.alert-info(style = 'margin-top: 20px;')
+		h4 #[strong You Could Help to Build EasyMaps and WIN £20!]
+
+		p The biggest thing that my project needs is #[strong a ton of data]. If you're an Android user and travel on the London Underground, you can help! I need volunteers to collect data during their journeys - it requires almost zero effort, and #[strong you could win £20]!
+
+		p I'll be awarding #[strong 2 x £20] vouchers: one for whoever collects #[strong the largest volume of data], and one for whoever collects #[strong the most highest number of data points].
+
+		p Email: #[strong me@markormesher.co.uk]
