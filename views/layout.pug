@@ -32,6 +32,7 @@ html
 				div.navbar-header: a.navbar-brand(href = '/') EasyMaps
 				div#navbar.navbar-collapse.collapse
 					ul.nav.navbar-nav
+						li(class = meta.page == 'scanning-stats' ? 'active' : ''): a(href = '/scanning-stats') Scanning Stats
 						li(class = meta.page == 'scan-logs' ? 'active' : ''): a(href = '/scan-logs') Scan Logs
 						li(class = meta.page == 'labellings' ? 'active' : ''): a(href = '/labellings') Labellings
 

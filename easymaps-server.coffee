@@ -34,6 +34,7 @@ app.use('/', rfr('./controllers/_root'))
 app.use('/auth', rfr('./controllers/auth'))
 app.use('/labellings', rfr('./controllers/labellings'))
 app.use('/scan-logs', rfr('./controllers/scan-logs'))
+app.use('/scanning-stats', rfr('./controllers/scanning-stats'))
 
 # squash favicon requests
 app.use('/favicon.ico', (req, res) -> res.end())

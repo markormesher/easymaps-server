@@ -1,0 +1,49 @@
+extends ../layout
+
+block body
+
+	div.row: div.col-md-12
+		- date = new Date(parseInt(updated)).toISOString().split('.')[0].replace('T', ' ')
+		p Last updated: #{date} GMT
+
+	div.row
+		div.col-md-6
+			table#table-1.table.table-striped.table-hover
+				thead
+					tr: th Biggest Volume of Data
+				tbody
+					each scores, userId in users
+						tr: td(data-order = scores.volume)
+							span(style = 'font-family: monospace;')= userId
+							| &nbsp;&nbsp;&nbsp;&nbsp;
+							span.text-muted= scores.volume.toLocaleString()
+
+		div.col-md-6
+			table#table-2.table.table-striped.table-hover
+				thead
+					tr: th Most Unique Data Points
+				tbody
+					each scores, userId in users
+						tr: td(data-order = scores.unique)
+							span(style = 'font-family: monospace;')= userId
+							| &nbsp;&nbsp;&nbsp;&nbsp;
+							span.text-muted= scores.unique.toLocaleString()
+
+block scripts
+
+	script.
+		$(document).ready(function () {
+			$('#table-1').DataTable({
+				paging: false,
+				info: false,
+				searching: false,
+				order: [[0, 'desc']]
+			});
+
+			$('#table-2').DataTable({
+				paging: false,
+				info: false,
+				searching: false,
+				order: [[0, 'desc']]
+			});
+		});
