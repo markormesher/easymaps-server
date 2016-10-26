@@ -3,8 +3,12 @@ extends ../layout
 block body
 
 	div.row: div.col-md-12
+		p.lead You can find your latest ranking by looking up your user ID in the tables below. Winners in each table will be awarded with a #[strong £20 Amazon voucher], along with a random raffle winner!
+
 		- date = new Date(parseInt(updated)).toISOString().split('.')[0].replace('T', ' ')
-		p Last updated: #{date} GMT
+		p Rankings will be updated at least once a day. #[strong Last updated: #{date} GMT.]
+
+		p Note: you can find your user ID by opening the scanning app, opening the menu, and tapping "Display User ID".
 
 	div.row
 		div.col-md-6
