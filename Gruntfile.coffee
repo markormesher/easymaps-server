@@ -28,6 +28,17 @@ module.exports = (grunt) ->
 				options:
 					config: 'main'
 
+			restart:
+				command: [
+					'cd /var/node/easymaps.markormesher.co.uk'
+					'pm2 stop --silent easymaps-server'
+					'pm2 start --silent easymaps-server'
+					'sleep 3'
+					'pm2 show easymaps-server'
+				].join(' && ')
+				options:
+					config: 'main'
+
 			status:
 				command: 'pm2 show easymaps-server'
 				options:
@@ -35,4 +46,5 @@ module.exports = (grunt) ->
 
 	# task aliases
 	grunt.registerTask('deploy', ['sshexec:deploy'])
+	grunt.registerTask('restart', ['sshexec:restart'])
 	grunt.registerTask('status', ['sshexec:status'])
