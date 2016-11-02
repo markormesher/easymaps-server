@@ -2,7 +2,6 @@
   "apps": [{
     "name": "easymaps-server",
     "cwd": "/var/node/easymaps.markormesher.co.uk/",
-    "script": "./easymaps-server.js",
-    "watch": true
+    "script": "./easymaps-server.js"
   }]
 }

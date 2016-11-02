@@ -2,7 +2,6 @@
   "apps": [{
     "name": "easymaps-server",
     "cwd": ".",
-    "script": "./easymaps-server.js",
-    "watch": true
+    "script": "./easymaps-server.js"
   }]
 }
