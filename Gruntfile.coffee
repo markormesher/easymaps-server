@@ -32,7 +32,7 @@ module.exports = (grunt) ->
 				command: [
 					'cd /var/node/easymaps.markormesher.co.uk'
 					'pm2 stop --silent easymaps-server'
-					'pm2 start --silent process.json'
+					'pm2 start --silent process.chuck.json'
 					'sleep 3'
 					'pm2 show easymaps-server'
 				].join(' && ')
