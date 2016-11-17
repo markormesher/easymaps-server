@@ -8,8 +8,6 @@ block body
 		- date = new Date(parseInt(updated)).toISOString().split('.')[0].replace('T', ' ')
 		p Rankings will be updated at least once a day. #[strong Last updated: #{date} GMT.]
 
-		p Note: you can find your user ID by opening the scanning app, opening the menu, and tapping "Display User ID".
-
 	div.row
 		div.col-md-6
 			table#table-1.table.table-striped.table-hover
@@ -32,6 +30,9 @@ block body
 							span(style = 'font-family: monospace;')= userId
 							| &nbsp;&nbsp;&nbsp;&nbsp;
 							span.text-muted= scores.unique.toLocaleString()
+
+	div.row: div.col-md-12
+		p Note: you can find your user ID by opening the scanning app, opening the menu, and tapping "Display User ID". Each volunteer can win at most one prize. The actual prizes are as follows, and will be drawn in the following order: volunteer with the biggest volume of data; volunteer with the most unique data points #[em who hasn't already won a prize]; volunteer selected at random #[em who hasn't already won a prize].
 
 block scripts
 
