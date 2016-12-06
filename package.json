@@ -1,7 +1,7 @@
 {
   "name": "easymaps-server",
   "description": "Server for EasyMaps data collection and distribution",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "license": "UNLICENSED",
   "private": true,
   "repository": "markormesher/easymaps-server",

@@ -6,6 +6,6 @@ block body
 		if users.length > 0
 			p The following users have requested that their data be removed from the project:
 			ul: each id in users
-				li= id
+				li: code= id
 		else
 			p No one has withdrawn yet!
