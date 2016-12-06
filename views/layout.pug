@@ -33,8 +33,10 @@ html
 				div#navbar.navbar-collapse.collapse
 					ul.nav.navbar-nav
 						li(class = meta.page == 'scanning-stats' ? 'active' : ''): a(href = '/scanning-stats') Scanning Stats
-						li(class = meta.page == 'scan-logs' ? 'active' : ''): a(href = '/scan-logs') Scan Logs
-						li(class = meta.page == 'labellings' ? 'active' : ''): a(href = '/labellings') Labellings
+						if (locals.user)
+							li(class = meta.page == 'scan-logs' ? 'active' : ''): a(href = '/scan-logs') Scan Logs
+							li(class = meta.page == 'labellings' ? 'active' : ''): a(href = '/labellings') Labellings
+							li(class = meta.page == 'withdrawal' ? 'active' : ''): a(href = '/withdrawal') Withdrawal
 
 					ul.nav.navbar-nav.navbar-right
 						if (locals.user)
