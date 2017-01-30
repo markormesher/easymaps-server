@@ -11,7 +11,7 @@ getLatest = (path, prefix, callback) ->
 		if (err) then return next(err)
 		filesToConsider = files.filter((x) -> x.substr(0, prefix.length) == prefix)
 		for f in filesToConsider
-			[network, timestamp] = f.replace('.txt', '').split('-')
+			[network, timestamp] = f.replace('.txt', '').replace('.json', '').split('-')
 			if (timestamp > latestTimestamp)
 				latestTimestamp = timestamp
 				latestFile = f
