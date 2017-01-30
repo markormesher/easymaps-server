@@ -18,6 +18,7 @@ module.exports = (grunt) ->
 					'cd /var/node/easymaps.markormesher.co.uk'
 					'mkdir -p uploads/scan-logs'
 					'mkdir -p uploads/labellings'
+					'mkdir -p uploads/data-packs'
 					'git pull origin master'
 					'npm i'
 					'pm2 stop --silent easymaps-server'

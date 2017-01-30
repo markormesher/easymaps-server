@@ -32,6 +32,7 @@ app.use(authCheck.checkOnly)
 # routes
 app.use('/', rfr('./controllers/_root'))
 app.use('/auth', rfr('./controllers/auth'))
+app.use('/data-packs', rfr('./controllers/data-packs'))
 app.use('/labellings', rfr('./controllers/labellings'))
 app.use('/scan-logs', rfr('./controllers/scan-logs'))
 app.use('/scanning-stats', rfr('./controllers/scanning-stats'))
@@ -48,7 +49,7 @@ app.use((req, res, next) ->
 )
 
 # generic error handler
-app.use((error, req, res, next) ->
+app.use((error, req, res) ->
 	console.log(error)
 	res.status(error.status || 500)
 	res.json(error)

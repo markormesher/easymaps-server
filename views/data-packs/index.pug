@@ -1,0 +1,43 @@
+extends ../layout
+
+block body
+
+	div.row: div.col-md-12
+		table#network-list.table.table-striped.table-hover
+			thead
+				tr
+					th Network
+					th Latest Version
+					th Available Versions
+					th Actions
+			tbody
+				each data, network in files
+					- date = new Date(parseInt(data.latest)).toISOString().split('.')[0].replace('T', ' ')
+					tr
+						td= network
+						td(data-order = data.files)= date
+						td(data-order = data.users)= data.files.toLocaleString()
+						td: div.btn-group
+							a.btn.btn-default.btn-xs(href = '/data-packs/download/' + network)
+								i.fa.fa-fw.fa-download
+								span &nbsp; Download Latest
+							a.btn.btn-default.btn-xs(href = '/data-packs/download-all/' + network)
+								i.fa.fa-fw.fa-download
+								span &nbsp; Download All
+
+	div.row: div.col-md-12
+		a.btn.btn-success(href = '/data-packs/upload')
+			i.fa.fa-fw.fa-upload
+			span &nbsp; Upload Data Pack
+
+block scripts
+
+	script.
+		$(document).ready(function () {
+			$('#network-list').DataTable({
+				paging: false,
+				info: false,
+				searching: false,
+				order: [[1, 'desc']]
+			});
+		});
