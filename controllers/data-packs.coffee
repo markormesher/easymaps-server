@@ -45,7 +45,7 @@ router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
 		res.render('data-packs/index', {
 			meta: {
 				title: 'Data Packs'
-				icon: 'fa-tags'
+				icon: 'fa-briefcase'
 				page: 'data-packs'
 			}
 			files: output
@@ -122,7 +122,7 @@ router.get('/upload', authCheck.checkAndRefuse, (req, res) ->
 	res.render('data-packs/upload', {
 		meta: {
 			title: 'Upload Data Packs'
-			icon: 'fa-tags'
+			icon: 'fa-briefcase'
 			page: 'data-packs'
 		}
 	})
