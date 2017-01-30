@@ -3,11 +3,10 @@ multer = require('multer')
 fs = require('fs')
 rfr = require('rfr')
 authCheck = rfr('./helpers/auth-check')
-
-PATH = 'uploads/withdrawals.txt'
+c = rfr('./helpers/constants')
 
 router.get('/', authCheck.checkAndRefuse, (req, res) ->
-	fs.readFile(PATH, 'utf8', (err, data) ->
+	fs.readFile(c.WITHDRAWAL_FILE, 'utf8', (err, data) ->
 		if (err)
 			withdrawnIds = []
 		else
@@ -26,7 +25,7 @@ router.get('/', authCheck.checkAndRefuse, (req, res) ->
 
 router.post('/register', (req, res) ->
 	id = req.body.userId
-	fs.appendFile(PATH, "\n#{id}", (err) ->
+	fs.appendFile(c.WITHDRAWAL_FILE, "\n#{id}", (err) ->
 		res.status(if (err) then 400 else 200)
 		res.end()
 	)

@@ -2,6 +2,7 @@ router = require('express').Router()
 fs = require('fs')
 rfr = require('rfr')
 pJson = rfr('./package.json')
+c = rfr('./helpers/constants')
 
 getLatest = (path, prefix, callback) ->
 	latestTimestamp = -1
@@ -26,7 +27,7 @@ router.get('/', (req, res) ->
 
 router.get('/data-packs/:network/stats', (req, res) ->
 	network = req.params['network']
-	getLatest('uploads/data-packs', network, (latestTimestamp) ->
+	getLatest(c.DATA_PACK_PATH, network, (latestTimestamp) ->
 		if (latestTimestamp > 0)
 			res.json({
 				network: network
@@ -42,7 +43,7 @@ router.get('/data-packs/:network/stats', (req, res) ->
 
 router.get('/labellings/:network/stats', (req, res) ->
 	network = req.params['network']
-	getLatest('uploads/labellings', network, (latestTimestamp) ->
+	getLatest(c.LABELLING_PATH, network, (latestTimestamp) ->
 		if (latestTimestamp > 0)
 			res.json({
 				network: network
@@ -58,9 +59,9 @@ router.get('/labellings/:network/stats', (req, res) ->
 
 router.get('/data-packs/:network/latest', (req, res) ->
 	network = req.params['network']
-	getLatest('uploads/data-packs', network, (latestTimestamp, latestFile) ->
+	getLatest(c.DATA_PACK_PATH, network, (latestTimestamp, latestFile) ->
 		if (latestFile)
-			fs.createReadStream('uploads/data-packs/' + latestFile).pipe(res)
+			fs.createReadStream(c.DATA_PACK_PATH + '/' + latestFile).pipe(res)
 		else
 			res.status(404)
 			res.json({
@@ -71,9 +72,9 @@ router.get('/data-packs/:network/latest', (req, res) ->
 
 router.get('/labellings/:network/latest', (req, res) ->
 	network = req.params['network']
-	getLatest('uploads/labellings', network, (latestTimestamp, latestFile) ->
+	getLatest(c.LABELLING_PATH, network, (latestTimestamp, latestFile) ->
 		if (latestFile)
-			fs.createReadStream('uploads/labellings/' + latestFile).pipe(res)
+			fs.createReadStream(c.LABELLING_PATH + '/' + latestFile).pipe(res)
 		else
 			res.status(404)
 			res.json({

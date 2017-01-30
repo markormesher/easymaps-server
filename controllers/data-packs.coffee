@@ -4,12 +4,11 @@ fs = require('fs')
 zipper = require('node-zip')
 rfr = require('rfr')
 authCheck = rfr('./helpers/auth-check')
-
-PATH = 'uploads/data-packs'
+c = rfr('./helpers/constants')
 
 uploader = multer({
 	storage: multer.diskStorage({
-		destination: PATH + '/'
+		destination: c.DATA_PACK_PATH + '/'
 		filename: (req, file, cb) ->
 			req.uploadErrors = []
 			if (file.mimetype != 'text/plain')
@@ -28,7 +27,7 @@ uploader = multer({
 })
 
 router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
-	fs.readdir(PATH, (err, files) ->
+	fs.readdir(c.DATA_PACK_PATH, (err, files) ->
 		if (err) then return next(err)
 
 		# versions (grouped by network)
@@ -64,7 +63,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 	maxTimestamp = -1
 
 	# get list of files, filtered by network prefix, and pick the latest
-	fs.readdir(PATH, (err, files) ->
+	fs.readdir(c.DATA_PACK_PATH, (err, files) ->
 		if (err) then return next(err)
 		filesToConsider = files.filter((x) -> x.substr(0, network.length) == network)
 		for f in filesToConsider
@@ -82,7 +81,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 			'Content-disposition': "attachment; filename=#{network}-#{maxTimestamp}.txt",
 			'Content-type': 'text/plain'
 		})
-		fs.createReadStream(PATH + '/' + file).pipe(res)
+		fs.createReadStream(c.DATA_PACK_PATH + '/' + file).pipe(res)
 )
 
 router.get('/download-all/:network', authCheck.checkAndRefuse, (req, res, next) ->
@@ -95,7 +94,7 @@ router.get('/download-all/:network', authCheck.checkAndRefuse, (req, res, next) 
 	filesToZip = []
 
 	# get list of files, filtered by network prefix
-	fs.readdir(PATH, (err, files) ->
+	fs.readdir(c.DATA_PACK_PATH, (err, files) ->
 		if (err) then return next(err)
 		filesToZip = files.filter((x) -> x.substr(0, network.length) == network)
 		addFile(0)
@@ -106,7 +105,7 @@ router.get('/download-all/:network', authCheck.checkAndRefuse, (req, res, next) 
 		if (i == filesToZip.length)
 			done()
 		else
-			fs.readFile("#{PATH}/#{filesToZip[i]}", (err, data) ->
+			fs.readFile("#{c.DATA_PACK_PATH}/#{filesToZip[i]}", (err, data) ->
 				if (err) then return next(err)
 				zip.file(filesToZip[i], data)
 				addFile(i + 1)
