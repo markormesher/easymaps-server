@@ -31,6 +31,7 @@ app.use(authCheck.checkOnly)
 
 # routes
 app.use('/', rfr('./controllers/_root'))
+app.use('/api', rfr('./controllers/api'))
 app.use('/auth', rfr('./controllers/auth'))
 app.use('/data-packs', rfr('./controllers/data-packs'))
 app.use('/labellings', rfr('./controllers/labellings'))
