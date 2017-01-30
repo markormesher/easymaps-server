@@ -11,8 +11,8 @@ uploader = multer({
 		destination: c.DATA_PACK_PATH + '/'
 		filename: (req, file, cb) ->
 			req.uploadErrors = []
-			if (file.mimetype != 'text/plain')
-				req.uploadErrors.push('MIME type must be text/plain')
+			if (file.mimetype != 'application/json')
+				req.uploadErrors.push('MIME type must be application/json')
 
 			if (!req.body['network'])
 				req.uploadErrors.push('No network specified')
@@ -22,7 +22,7 @@ uploader = multer({
 				return
 
 			network = req.body['network']
-			cb(null, "#{network}-#{(new Date()).getTime()}.txt")
+			cb(null, "#{network}-#{(new Date()).getTime()}.json")
 	})
 })
 
@@ -33,7 +33,7 @@ router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
 		# versions (grouped by network)
 		output = {}
 		for f in files
-			[network, timestamp] = f.replace('.txt', '').split('-')
+			[network, timestamp] = f.replace('.json', '').split('-')
 
 			if (!(network of output))
 				output[network] = { files: 0, latest: -1 }
@@ -67,7 +67,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 		if (err) then return next(err)
 		filesToConsider = files.filter((x) -> x.substr(0, network.length) == network)
 		for f in filesToConsider
-			[network, timestamp] = f.replace('.txt', '').split('-')
+			[network, timestamp] = f.replace('.json', '').split('-')
 			if (timestamp > maxTimestamp)
 				maxTimestamp = timestamp
 				fileToSend = f
@@ -78,7 +78,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 	# send zip file to client
 	done = (file) ->
 		res.writeHead(200, {
-			'Content-disposition': "attachment; filename=#{network}-#{maxTimestamp}.txt",
+			'Content-disposition': "attachment; filename=#{network}-#{maxTimestamp}.json",
 			'Content-type': 'text/plain'
 		})
 		fs.createReadStream(c.DATA_PACK_PATH + '/' + file).pipe(res)
