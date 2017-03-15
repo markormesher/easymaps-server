@@ -1,5 +1,4 @@
 router = require('express').Router()
-multer = require('multer')
 fs = require('fs')
 rfr = require('rfr')
 authCheck = rfr('./helpers/auth-check')

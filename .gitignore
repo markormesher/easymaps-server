@@ -1,5 +1,7 @@
 ### Project Specfic
 
+secrets.json
+
 # None of the files that end up in the local uploads folder
 uploads/
 

@@ -7,6 +7,7 @@ bodyParser = require('body-parser')
 cookieParser = require('cookie-parser')
 passport = require('passport')
 pJson = rfr('./package.json')
+secrets = rfr('./secrets.json')
 c = rfr('./helpers/constants')
 authCheck = rfr('./helpers/auth-check')
 
@@ -18,7 +19,7 @@ app.use(flash())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(session({
-	secret: 'g'
+	secret: secrets['session_secret']
 	resave: false
 	saveUninitialized: false
 }))
@@ -38,6 +39,7 @@ app.use('/labellings', rfr('./controllers/labellings'))
 app.use('/scan-logs', rfr('./controllers/scan-logs'))
 app.use('/scanning-stats', rfr('./controllers/scanning-stats'))
 app.use('/withdrawal', rfr('./controllers/withdrawal'))
+app.use('/winners', rfr('./controllers/winners'))
 
 # squash favicon requests
 app.use('/favicon.ico', (req, res) -> res.end())
