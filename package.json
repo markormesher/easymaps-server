@@ -6,6 +6,9 @@
   "private": true,
   "repository": "markormesher/easymaps-server",
   "main": "easymaps-server.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha ./test/. --recursive --compilers coffee:coffee-script/register"
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
     "coffee-script": "^1.11.1",
@@ -23,7 +26,10 @@
     "rfr": "^1.2.3"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "grunt": "~0.4.5",
-    "grunt-ssh": "^0.12.9"
+    "grunt-ssh": "^0.12.9",
+    "mocha": "^3.2.0"
   }
 }
