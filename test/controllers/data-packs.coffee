@@ -6,15 +6,15 @@ chai.use(require('chai-http'))
 expect = chai.expect
 helpers = rfr('./helpers/test-helpers')
 
-describe('Scan logs controller', () ->
+describe('Data packs controller', () ->
 
 	beforeEach(() -> helpers.logout(server))
 
-	describe('GET /scan-logs', () ->
+	describe('GET /data-packs', () ->
 
 		it('Should not allow unauthorised requests', (done) ->
 			chai.request(server)
-				.get('/scan-logs')
+				.get('/data-packs')
 				.redirects(0)
 				.end((err, res) ->
 					expect(res.status).to.equal(302)
@@ -28,7 +28,7 @@ describe('Scan logs controller', () ->
 		it('Should allow authorised requests', (done) ->
 			helpers.login(server)
 			chai.request(server)
-				.get('/scan-logs')
+				.get('/data-packs')
 				.redirects(0)
 				.end((err, res) ->
 					expect(res.status).to.equal(200)

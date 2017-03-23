@@ -5,17 +5,9 @@ secrets = rfr('./secrets.json')
 
 sha256 = (data) -> crypto.createHash('sha256').update(data).digest('hex')
 
-winners = {
+winners = require('../helpers/winners')
 
-	# TO BE POPULATED AT THE END OF THE TRIAL
-
-	# Example format:
-	# '23ef028e-1ac7-411e-8aba-6279f06012f4': {
-	#     secret: sha256('23ef028e-1ac7-411e-8aba-6279f06012f4' + secrets['winner_salt'])
-	#     prize: 'TEST_PRIZE_1'
-	# }
-
-}
+console.log(winners)
 
 router.post('/', (req, res) ->
 	id = req.body.id

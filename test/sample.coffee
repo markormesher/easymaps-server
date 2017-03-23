@@ -10,7 +10,7 @@ describe('Sample Tests', () ->
 			() ->
 				(2 + 3).should.equal(5)
 				done()
-			100
+			10
 		)
 	)
 )

@@ -58,5 +58,6 @@ app.use((error, req, res) ->
 	res.json(error)
 )
 
-app.listen(c.PORT)
-console.log("#{pJson.name} is listening on port #{c.PORT}")
+app.listen(c.PORT, () -> console.log("#{pJson.name} is listening on port #{c.PORT}"))
+
+module.exports = app
