@@ -17,18 +17,18 @@ winners = {
 
 describe('Winners controller', () ->
 
+	originalWinners = {}
+
+	beforeEach(() ->
+		require('../../helpers/winners')
+		originalWinners = require.cache[require.resolve('../../helpers/winners')]
+	)
+
+	afterEach(() ->
+		require.cache[require.resolve('../../helpers/winners')] = originalWinners
+	)
+
 	describe('POST /winners', () ->
-
-		originalWinners = {}
-
-		beforeEach(() ->
-			require('../../helpers/winners')
-			originalWinners = require.cache[require.resolve('../../helpers/winners')]
-		)
-
-		afterEach(() ->
-			require.cache[require.resolve('../../helpers/winners')] = originalWinners
-		)
 
 		it('Should allow unauthorised requests', (done) ->
 			chai.request(server)
@@ -48,6 +48,7 @@ describe('Winners controller', () ->
 				.set('content-type', 'application/x-www-form-urlencoded')
 				.send({ id: 'valid-id', secret: 'valid-secret' })
 				.end((err, res) ->
+					expect(err).to.be.null
 					expect(res.text).to.equal('prize-code')
 					done()
 			)
@@ -61,6 +62,7 @@ describe('Winners controller', () ->
 				.set('content-type', 'application/x-www-form-urlencoded')
 				.send({ id: 'valid-id', secret: 'valid-secret' })
 				.end((err, res) ->
+					expect(err).to.be.null
 					expect(res.text).to.equal('TOO SOON')
 					done()
 				)
@@ -72,8 +74,9 @@ describe('Winners controller', () ->
 			chai.request(server)
 				.post('/winners')
 				.set('content-type', 'application/x-www-form-urlencoded')
-				.send({ id: 'idvalid-id', secret: 'valid-secret' })
+				.send({ id: 'invalid-id', secret: 'valid-secret' })
 				.end((err, res) ->
+					expect(err).to.be.null
 					expect(res.text).to.equal('NOPE')
 					done()
 			)
@@ -87,6 +90,7 @@ describe('Winners controller', () ->
 				.set('content-type', 'application/x-www-form-urlencoded')
 				.send({ id: 'valid-id', secret: 'invalid-secret' })
 				.end((err, res) ->
+					expect(err).to.be.null
 					expect(res.text).to.equal('NICE TRY')
 					done()
 			)
