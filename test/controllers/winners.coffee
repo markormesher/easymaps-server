@@ -5,6 +5,16 @@ chai = require('chai')
 chai.use(require('chai-http'))
 expect = chai.expect
 
+winners = {
+	empty: {}
+	valid: {
+		'valid-id': {
+			secret: 'valid-secret'
+			prize: 'prize-code'
+		}
+	}
+}
+
 describe('Winners controller', () ->
 
 	describe('POST /winners', () ->
@@ -13,11 +23,11 @@ describe('Winners controller', () ->
 
 		beforeEach(() ->
 			require('../../helpers/winners')
-			originalWinners = require._cache[require.resolve('../../helpers/winners')]
+			originalWinners = require.cache[require.resolve('../../helpers/winners')]
 		)
 
 		afterEach(() ->
-			require._cache[require.resolve('../../helpers/winners')] = originalWinners
+			require.cache[require.resolve('../../helpers/winners')] = originalWinners
 		)
 
 		it('Should allow unauthorised requests', (done) ->
@@ -31,12 +41,25 @@ describe('Winners controller', () ->
 			return
 		)
 
-		it('Should return NOT YET for empty winner array', (done) ->
-			require._cache[require.resolve('../../helpers/winners')] = {}
+		it('Should return prize for valid claim', (done) ->
+			require.cache[require.resolve('../../helpers/winners')].exports = winners.valid
 			chai.request(server)
 				.post('/winners')
-				.send({ id: '1', secret: '2' })
-				.redirects(0)
+				.set('content-type', 'application/x-www-form-urlencoded')
+				.send({ id: 'valid-id', secret: 'valid-secret' })
+				.end((err, res) ->
+					expect(res.text).to.equal('prize-code')
+					done()
+			)
+			return
+		)
+
+		it('Should return TOO SOON for empty winner array', (done) ->
+			require.cache[require.resolve('../../helpers/winners')].exports = winners.empty
+			chai.request(server)
+				.post('/winners')
+				.set('content-type', 'application/x-www-form-urlencoded')
+				.send({ id: 'valid-id', secret: 'valid-secret' })
 				.end((err, res) ->
 					expect(res.text).to.equal('TOO SOON')
 					done()
@@ -44,21 +67,29 @@ describe('Winners controller', () ->
 			return
 		)
 
-		it('Should return NICE TRY for invalid secret', (done) ->
-			require._cache[require.resolve('../../helpers/winners')] = {
-				'valid-id': {
-					secret: 'valid-secret'
-					prize: 'TEST_PRIZE_1'
-				}
-			}
+		it('Should return NOPE for non-winning ID', (done) ->
+			require.cache[require.resolve('../../helpers/winners')].exports = winners.valid
 			chai.request(server)
 				.post('/winners')
+				.set('content-type', 'application/x-www-form-urlencoded')
+				.send({ id: 'idvalid-id', secret: 'valid-secret' })
+				.end((err, res) ->
+					expect(res.text).to.equal('NOPE')
+					done()
+			)
+			return
+		)
+
+		it('Should return NICE TRY for invalid secret', (done) ->
+			require.cache[require.resolve('../../helpers/winners')].exports = winners.valid
+			chai.request(server)
+				.post('/winners')
+				.set('content-type', 'application/x-www-form-urlencoded')
 				.send({ id: 'valid-id', secret: 'invalid-secret' })
-				.redirects(0)
 				.end((err, res) ->
 					expect(res.text).to.equal('NICE TRY')
 					done()
-				)
+			)
 			return
 		)
 	)

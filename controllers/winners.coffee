@@ -5,13 +5,11 @@ secrets = rfr('./secrets.json')
 
 sha256 = (data) -> crypto.createHash('sha256').update(data).digest('hex')
 
-winners = require('../helpers/winners')
-
-console.log(winners)
-
 router.post('/', (req, res) ->
 	id = req.body.id
 	secret = req.body.secret
+
+	winners = require('../helpers/winners')
 
 	if (Object.keys(winners).length == 0)
 		res.send('TOO SOON')
