@@ -1,7 +1,7 @@
 router = require('express').Router()
 rfr = require('rfr')
 pJson = rfr('./package.json')
-c = rfr('./helpers/constants')
+constants = rfr('./helpers/constants')
 
 getLatest = (path, prefix, callback) ->
 	latestTimestamp = -1
@@ -21,13 +21,13 @@ getLatest = (path, prefix, callback) ->
 
 router.get('/', (req, res) ->
 	res.json({
-		version: pJson.version
+		version: pJson['version']
 	})
 )
 
 router.get('/data-packs/:network/stats', (req, res) ->
 	network = req.params['network']
-	getLatest(c.DATA_PACK_PATH, network, (latestTimestamp) ->
+	getLatest(constants['DATA_PACK_PATH'], network, (latestTimestamp) ->
 		if (latestTimestamp > 0)
 			res.json({
 				network: network
@@ -43,7 +43,7 @@ router.get('/data-packs/:network/stats', (req, res) ->
 
 router.get('/labellings/:network/stats', (req, res) ->
 	network = req.params['network']
-	getLatest(c.LABELLING_PATH, network, (latestTimestamp) ->
+	getLatest(constants['LABELLING_PATH'], network, (latestTimestamp) ->
 		if (latestTimestamp > 0)
 			res.json({
 				network: network
@@ -59,10 +59,10 @@ router.get('/labellings/:network/stats', (req, res) ->
 
 router.get('/data-packs/:network/latest', (req, res) ->
 	network = req.params['network']
-	getLatest(c.DATA_PACK_PATH, network, (latestTimestamp, latestFile) ->
+	getLatest(constants['DATA_PACK_PATH'], network, (latestTimestamp, latestFile) ->
 		if (latestFile)
 			fs = require('fs')
-			fs.createReadStream(c.DATA_PACK_PATH + '/' + latestFile).pipe(res)
+			fs.createReadStream(constants['DATA_PACK_PATH'] + '/' + latestFile).pipe(res)
 		else
 			res.status(404)
 			res.json({
@@ -73,10 +73,10 @@ router.get('/data-packs/:network/latest', (req, res) ->
 
 router.get('/labellings/:network/latest', (req, res) ->
 	network = req.params['network']
-	getLatest(c.LABELLING_PATH, network, (latestTimestamp, latestFile) ->
+	getLatest(constants['LABELLING_PATH'], network, (latestTimestamp, latestFile) ->
 		if (latestFile)
 			fs = require('fs')
-			fs.createReadStream(c.LABELLING_PATH + '/' + latestFile).pipe(res)
+			fs.createReadStream(constants['LABELLING_PATH'] + '/' + latestFile).pipe(res)
 		else
 			res.status(404)
 			res.json({

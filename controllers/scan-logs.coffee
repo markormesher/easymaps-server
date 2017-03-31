@@ -8,13 +8,13 @@ c = rfr('./helpers/constants')
 
 uploader = multer({
 	storage: multer.diskStorage({
-		destination: c.SCAN_LOG_PATH
+		destination: c['SCAN_LOG_PATH']
 		filename: (req, file, cb) ->
 			req.uploadErrors = []
 			if (file.mimetype != 'text/plain')
 				req.uploadErrors.push('MIME type must be text/plain')
 
-			if (!c.LOG_FILE_NAME_FORMAT.test(file.originalname))
+			if (!c['LOG_FILE_NAME_FORMAT'].test(file.originalname))
 				req.uploadErrors.push('File name does not match expected format')
 
 			if (!req.body['network'])
@@ -30,14 +30,14 @@ uploader = multer({
 			timestamp = file.originalname.replace('.txt', '')
 			network = req.body['network']
 			userId = req.body['userId']
-			if (!c.USER_ID_FORMAT.test(userId)) then userId = 'unknown'
+			if (!c['USER_ID_FORMAT'].test(userId)) then userId = 'unknown'
 
 			cb(null, "#{network}-#{timestamp}-#{userId}.txt")
 	})
 })
 
 router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
-	fs.readdir(c.SCAN_LOG_PATH, (err, files) ->
+	fs.readdir(c['SCAN_LOG_PATH'], (err, files) ->
 		if (err) then return next(err)
 
 		# count files and collect unique users (both grouped by network)
@@ -78,7 +78,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 	filesToZip = []
 
 	# get list of files, filtered by network prefix
-	fs.readdir(c.SCAN_LOG_PATH, (err, files) ->
+	fs.readdir(c['SCAN_LOG_PATH'], (err, files) ->
 		if (err) then return next(err)
 		filesToZip = files.filter((x) -> x.substr(0, network.length) == network)
 		addFile(0)
@@ -89,7 +89,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 		if (i == filesToZip.length)
 			done()
 		else
-			fs.readFile("#{c.SCAN_LOG_PATH}/#{filesToZip[i]}", (err, data) ->
+			fs.readFile("#{c['SCAN_LOG_PATH']}/#{filesToZip[i]}", (err, data) ->
 				if (err) then return next(err)
 				zip.file(filesToZip[i], data)
 				addFile(i + 1)

@@ -4,11 +4,11 @@ fs = require('fs')
 zipper = require('node-zip')
 rfr = require('rfr')
 authCheck = rfr('./helpers/auth-check')
-c = rfr('./helpers/constants')
+constants = rfr('./helpers/constants')
 
 uploader = multer({
 	storage: multer.diskStorage({
-		destination: c.LABELLING_PATH + '/'
+		destination: constants['LABELLING_PATH'] + '/'
 		filename: (req, file, cb) ->
 			req.uploadErrors = []
 			if (file.mimetype != 'text/plain')
@@ -27,7 +27,7 @@ uploader = multer({
 })
 
 router.get('/', authCheck.checkAndRefuse, (req, res, next) ->
-	fs.readdir(c.LABELLING_PATH, (err, files) ->
+	fs.readdir(constants['LABELLING_PATH'], (err, files) ->
 		if (err) then return next(err)
 
 		# versions (grouped by network)
@@ -63,7 +63,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 	maxTimestamp = -1
 
 	# get list of files, filtered by network prefix, and pick the latest
-	fs.readdir(c.LABELLING_PATH, (err, files) ->
+	fs.readdir(constants['LABELLING_PATH'], (err, files) ->
 		if (err) then return next(err)
 		filesToConsider = files.filter((x) -> x.substr(0, network.length) == network)
 		for f in filesToConsider
@@ -81,7 +81,7 @@ router.get('/download/:network', authCheck.checkAndRefuse, (req, res, next) ->
 			'Content-disposition': "attachment; filename=#{network}-#{maxTimestamp}.txt",
 			'Content-type': 'text/plain'
 		})
-		fs.createReadStream(c.LABELLING_PATH + '/' + file).pipe(res)
+		fs.createReadStream(constants['LABELLING_PATH'] + '/' + file).pipe(res)
 )
 
 router.get('/download-all/:network', authCheck.checkAndRefuse, (req, res, next) ->
@@ -94,7 +94,7 @@ router.get('/download-all/:network', authCheck.checkAndRefuse, (req, res, next) 
 	filesToZip = []
 
 	# get list of files, filtered by network prefix
-	fs.readdir(c.LABELLING_PATH, (err, files) ->
+	fs.readdir(constants['LABELLING_PATH'], (err, files) ->
 		if (err) then return next(err)
 		filesToZip = files.filter((x) -> x.substr(0, network.length) == network)
 		addFile(0)
@@ -105,7 +105,7 @@ router.get('/download-all/:network', authCheck.checkAndRefuse, (req, res, next) 
 		if (i == filesToZip.length)
 			done()
 		else
-			fs.readFile("#{c.LABELLING_PATH}/#{filesToZip[i]}", (err, data) ->
+			fs.readFile("#{constants['LABELLING_PATH']}/#{filesToZip[i]}", (err, data) ->
 				if (err) then return next(err)
 				zip.file(filesToZip[i], data)
 				addFile(i + 1)

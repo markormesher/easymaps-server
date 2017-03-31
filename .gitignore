@@ -1,5 +1,6 @@
 ### Project Specfic
 
+# Never let the secrets file get into version control
 secrets.json
 
 # None of the files that end up in the local uploads folder
