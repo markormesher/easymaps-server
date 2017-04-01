@@ -1,5 +1,8 @@
 rfr = require('rfr')
+crypto = require('crypto')
 secrets = rfr('./secrets.json')
+
+sha256 = (data) -> crypto.createHash('sha256').update(data).digest('hex')
 
 module.exports = {
 
